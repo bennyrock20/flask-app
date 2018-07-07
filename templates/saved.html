@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %} Saved {% endblock %}
+
+
+{% block heading %} Yeah, Saved {{name}} {% endblock %}
+
+{% block body %}
+    
+<a href="{{ url_for('new') }}">Add More..</a>
+
+{% endblock %}

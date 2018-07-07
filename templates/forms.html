@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %} Form {% endblock %}
+
+
+{% block heading %} Add New Form {% endblock %}
+
+{% block body %}
+    
+<form action="/save" method="post">
+<input type="text" name="name" id="name" placeholder="Name">
+<input type="submit" value="Enviar">
+</form>
+
+{% endblock %}

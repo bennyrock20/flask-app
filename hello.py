@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 app = Flask(__name__)
 
 @app.route("/")
@@ -27,3 +27,12 @@ def new_year():
 @app.route("/more")
 def more():
     return "heres more"
+
+@app.route('/new')
+def new():
+    return render_template('forms.html')
+
+@app.route('/save', methods=["POST"])
+def save():
+    name = request.form.get("name")
+    return render_template('saved.html', name = name)
