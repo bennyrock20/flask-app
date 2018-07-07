@@ -23,3 +23,7 @@ def new_year():
     new_year = now.month == 1 and now.day == 1
     names = ["Alice","Jane","Diana"]
     return render_template('new_year.html', new_year= new_year, names = names)
+
+@app.route("/more")
+def more():
+    return "heres more"
