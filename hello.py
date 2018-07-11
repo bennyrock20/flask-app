@@ -1,10 +1,36 @@
 import datetime
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,redirect,url_for
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.sql import select
+from mysql.connector import IntegrityError
+
 app = Flask(__name__)
 
+engine = create_engine('mysql+mysqlconnector://root@localhost/db_name')
+connection = engine.connect()
+
+
+
 @app.route("/")
-def hello():
-    return "Hello World!"
+def index():
+    stm = "SELECT * FROM `user` JOIN `group` ON group.id = user.group_id"
+    users = connection.execute(stm).fetchall()
+    return render_template('index.html', users= users)
+
+@app.route('/save', methods=["POST"])
+def save():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    group = request.form.get("group")
+    metada = MetaData()
+    user = Table('user',metada,autoload = True,autoload_with=engine)
+    ins = user.insert().values(user_name=name, email_address=email,password=password,group_id=group)
+    result = connection.execute(ins)
+    print(result)
+    return redirect(url_for('index'))
 
 
 @app.route("/name/<string:name>")
@@ -31,8 +57,3 @@ def more():
 @app.route('/new')
 def new():
     return render_template('forms.html')
-
-@app.route('/save', methods=["POST"])
-def save():
-    name = request.form.get("name")
-    return render_template('saved.html', name = name)
